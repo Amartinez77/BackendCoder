@@ -7,6 +7,7 @@ import express from "express";
 import productRouter from "./routes/product.route.js";
 import cartRouter from "./routes/cart.route.js";
 import userRouter from "./routes/user.route.js";
+// import chatRouter from "./routes/chat.route.js";
 import otherRouter from "./routes/other.route.js";
 import session from "express-session";
 import { engine } from "express-handlebars";
@@ -18,7 +19,10 @@ import minimist from "minimist";
 import passport from "passport";
 import logger from "./utils/loggers/Log4jsLogger.js";
 import loggerMiddleware from "./middlewares/routesLogger.middleware.js";
-
+import { Server as HttpServer } from "http";
+import { Server as IOServer } from "socket.io";
+//const io = new IOServer(HttpServer);
+//import { configureSocketIO } from "../socket/socketChat.js";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -71,11 +75,15 @@ app.use(passport.session());
 app.use("/api/productos", productRouter);
 app.use("/api/carrito", cartRouter);
 app.use("/api/usuario", userRouter);
+//app.use("/api/chat", chatRouter);
 app.use("/test", otherRouter);
 
 app.all("*", (req, res) => {
   res.status(404).json({ error: "ruta no existente" });
 });
+
+//Socket chat:
+//socketIoChat(io);
 
 /* --------------- Leer el puerto por consola o setear default -------------- */
 
@@ -96,8 +104,12 @@ app._router.stack.forEach(function (r) {
 
 const { PORT } = minimist(process.argv.slice(2), options);
 
-const server = app.listen(PORT, () => {
+// const server = app.listen(PORT, () => {
+//   logger.info(`🚀 Server started at http://localhost:${PORT}`);
+// });
+
+// server.on("error", (err) => logger.error(err));
+
+const httpServer = app.listen(PORT, () => {
   logger.info(`🚀 Server started at http://localhost:${PORT}`);
 });
-
-server.on("error", (err) => logger.error(err));

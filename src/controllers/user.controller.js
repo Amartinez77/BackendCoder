@@ -6,6 +6,7 @@ const usuarioService = UsuarioService.getInstance();
 
 export async function logInView(req, res) {
   if (req.session.login) {
+    console.log(req);
     res.redirect("/api/usuario");
   } else {
     res.render("login", { status: false });
@@ -33,12 +34,10 @@ export async function signUp(req, res) {
         */
     res.status(200).json({ success: "User added with ID " + newUser._id });
   } else {
-    res
-      .status(400)
-      .json({
-        error:
-          "there was an error, please verify the body content match the schema",
-      });
+    res.status(400).json({
+      error:
+        "there was an error, please verify the body content match the schema",
+    });
   }
 }
 
@@ -51,6 +50,7 @@ export async function logIn(req, res) {
 
   if (loggedUser) {
     req.session.login = true;
+    console.log(user);
     res.redirect("/api/usuario");
   } else {
     req.session.login = false;
