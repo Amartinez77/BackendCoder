@@ -7,7 +7,7 @@ import express from "express";
 import productRouter from "./routes/product.route.js";
 import cartRouter from "./routes/cart.route.js";
 import userRouter from "./routes/user.route.js";
-// import chatRouter from "./routes/chat.route.js";
+import router from "./routes/chat.route.js";
 import otherRouter from "./routes/other.route.js";
 import session from "express-session";
 import { engine } from "express-handlebars";
@@ -23,6 +23,7 @@ import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
 //const io = new IOServer(HttpServer);
 //import { configureSocketIO } from "../socket/socketChat.js";
+import initSocketIO from "./controllers/chatControllers.js";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -75,7 +76,7 @@ app.use(passport.session());
 app.use("/api/productos", productRouter);
 app.use("/api/carrito", cartRouter);
 app.use("/api/usuario", userRouter);
-//app.use("/api/chat", chatRouter);
+app.use("/api/chat", router);
 app.use("/test", otherRouter);
 
 app.all("*", (req, res) => {
@@ -113,3 +114,5 @@ const { PORT } = minimist(process.argv.slice(2), options);
 const httpServer = app.listen(PORT, () => {
   logger.info(`🚀 Server started at http://localhost:${PORT}`);
 });
+
+initSocketIO(httpServer);
