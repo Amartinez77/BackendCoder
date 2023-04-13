@@ -1,8 +1,10 @@
 import saveMessage from "../services/chatService.js";
 import { Server } from "socket.io";
 
+const message = { user: "pepe", text: "hola" };
+
 export function getIndex(req, res) {
-  res.render("chat");
+  res.render("chat", { message });
 }
 
 // Configuración de Socket.IO
@@ -17,10 +19,10 @@ export default function initSocketIO(server) {
       console.log("Usuario desconectado");
     });
 
-    socket.on("chat message", async (msg) => {
+    socket.on("message", async (msg) => {
       console.log("Mensaje recibido:", msg);
       await saveMessage(msg.user, msg.text);
-      io.emit("chat message", msg);
+      io.emit("message", msg);
     });
   });
 }
