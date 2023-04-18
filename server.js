@@ -4,11 +4,11 @@ dotenv.config();
 console.log(process.env.MONGO_URI);
 
 import express from "express";
-import productRouter from "./routes/product.route.js";
-import cartRouter from "./routes/cart.route.js";
-import userRouter from "./routes/user.route.js";
-import router from "./routes/chat.route.js";
-import otherRouter from "./routes/other.route.js";
+import productRouter from "./src/routes/product.route.js";
+import cartRouter from "./src/routes/cart.route.js";
+import userRouter from "./src/routes/user.route.js";
+import router from "./src/routes/chat.route.js";
+import otherRouter from "./src/routes/other.route.js";
 import session from "express-session";
 import { engine } from "express-handlebars";
 import path from "path";
@@ -17,27 +17,29 @@ import mongoStore from "connect-mongo";
 import compression from "compression";
 import minimist from "minimist";
 import passport from "passport";
-import logger from "./utils/loggers/Log4jsLogger.js";
-import loggerMiddleware from "./middlewares/routesLogger.middleware.js";
+import logger from "./src/utils/loggers/Log4jsLogger.js";
+import loggerMiddleware from "./src/middlewares/routesLogger.middleware.js";
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
 //const io = new IOServer(HttpServer);
 //import { configureSocketIO } from "../socket/socketChat.js";
-import initSocketIO from "./controllers/chatControllers.js";
+import initSocketIO from "./src/controllers/chatControllers.js";
 const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+console.log(__dirname);
 
 app.use(loggerMiddleware);
-app.use(express.static("public"));
-app.use(compression());
-//app.set("views", "/src/views");
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "hbs");
-
+app.use(express.static("./public"));
+// app.use(express.static(path.join(__dirname, "./public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(compression());
+// app.set("views", "/src/views");
+app.set("views", path.join(__dirname, "/src/views"));
+app.set("view engine", "hbs");
 
 app.use(passport.initialize());
 
@@ -46,8 +48,8 @@ app.engine(
   engine({
     extname: ".hbs",
     defaultLayout: "index",
-    layoutsDir: __dirname + "/views/layouts",
-    partialsDir: __dirname + "/views/partials",
+    layoutsDir: __dirname + "/src/views/layouts",
+    partialsDir: __dirname + "/src/views/partials",
     runtimeOptions: {
       allowProtoPropertiesByDefault: true,
       allowProtoMethodsByDefault: true,

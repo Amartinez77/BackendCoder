@@ -1,24 +1,28 @@
-
-
-
- {{#if products}}
-    <div class="table-responsive">
-      <table class="table table-dark">
-        <tr style="color: yellow;"> <th>Nombre</th> <th>descripcion</th> <th>codigo</th> <th>Thumbnail</th> <th>Precio</th> <th>stock</th>  </tr>
-        {{#each products}}
-          <tr>
-            <td>{{title}}</td>
-            <td>{{this.description}}</td>
-            <td>{{this.code}}</td>
-            <td><img src="{{this.pic}}" alt="Imagen del producto"></td>
-            {{!-- <td>{{this.pic}}</td> --}}
-            <td>{{this.price}}</td>
-            <td>{{this.stock}}</td>
-          </tr>
-        {{/each}}
-      </table>
-    </div>
-
+{{#if products}}
+  <div class="table-responsive">
+    <table class="table table-dark">
+      <tr style="color: yellow;">
+        <th>Nombre</th>
+        <th>descripcion</th>
+        <th>codigo</th>
+        <th>Thumbnail</th>
+        <th>Precio</th>
+        <th>stock</th>
+      </tr>
+      {{#each products}}
+        <tr>
+          <td>{{title}}</td>
+          <td>{{this.description}}</td>
+          <td>{{this.code}}</td>
+          <td><img src="{{this.pic}}" alt="Imagen del producto" /></td>
+          {{!-- <td>{{this.pic}}</td> --}}
+          <td>{{this.price}}</td>
+          <td>{{this.stock}}</td>
+          <td><button class="addToCart" id="{{this.id}}">addToCart</button></td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
 
   <h3>Agregar productos</h3>
 
@@ -84,7 +88,6 @@
           />
         </div>
 
-        
         <div class="form-group">
           <label for="stock"><b>stock</b></label>
           <input
@@ -100,10 +103,7 @@
     </div>
   </div>
 
-
-  {{/if}}
-  {{#unless products}}
-    <h3 class="alert alert-danger">{{err.message}}</h3>
-  {{/unless}}
-
-
+{{/if}}
+{{#unless products}}
+  <h3 class="alert alert-danger">{{err.message}}</h3>
+{{/unless}}

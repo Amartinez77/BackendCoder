@@ -11,4 +11,8 @@ router.post("/:id/productos", cartController.addProduct);
 router.delete("/:id/productos/:id_prod", cartController.removeProduct);
 router.delete("/:id", cartController.remove);
 
+router.get("/prueba", (req, res) => {
+  res.render("carrito");
+});
+
 export default router;
